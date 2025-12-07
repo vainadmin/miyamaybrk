@@ -9,10 +9,10 @@
 ## Activate it when you want to go live 
 
 ### FULL GAME! 
-define config.steam_appid = 4238360
+### define config.steam_appid = 4238360
 
 ### DEMO!
-### define config.steam_appid = 3858520
+define config.steam_appid = 4238390
 
 
 ###############
