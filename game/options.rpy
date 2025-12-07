@@ -12,7 +12,7 @@
 ##
 ## The _() surrounding the string marks it as eligible for translation.
 
-define config.name = _("MiyaMightBreak")
+define config.name = _("Mutual Harrow")
 
 
 ## Determines if the title given above is shown on the main menu screen. Set
@@ -37,7 +37,7 @@ define gui.about = _p("""
 ## distribution. This must be ASCII-only, and must not contain spaces, colons,
 ## or semicolons.
 
-define build.name = "MiyaMightBreak"
+define build.name = "MutualHarrow"
 
 
 ## Sounds and music ############################################################
@@ -73,23 +73,23 @@ define config.has_voice = True
 
 ## Entering or exiting the game menu.
 
-define config.enter_transition = dissolve
-define config.exit_transition = dissolve
+define config.enter_transition = Dissolve(.5)
+define config.exit_transition = Dissolve(.5)
 
 
 ## Between screens of the game menu.
 
-define config.intra_transition = dissolve
+define config.intra_transition = Dissolve(.5)
 
 
 ## A transition that is used after a game has been loaded.
 
-define config.after_load_transition = None
+define config.after_load_transition = Dissolve(.5)
 
 
 ## Used when entering the main menu after the game has ended.
 
-define config.end_game_transition = None
+define config.end_game_transition = Dissolve(3)
 
 
 ## A variable to set the transition used when the game starts does not exist.
@@ -111,8 +111,8 @@ define config.window = "auto"
 
 ## Transitions used to show and hide the dialogue window
 
-define config.window_show_transition = Dissolve(.2)
-define config.window_hide_transition = Dissolve(.2)
+define config.window_show_transition = dissolve
+define config.window_hide_transition = dissolve
 
 
 ## Preference defaults #########################################################
@@ -121,6 +121,9 @@ define config.window_hide_transition = Dissolve(.2)
 ## number is the number of characters per second to type out.
 
 default preferences.text_cps = 0
+
+# Anime framerate 
+default preferences.gl_framerate = 60 
 
 
 ## The default auto-forward delay. Larger numbers lead to longer waits, with 0
@@ -143,7 +146,7 @@ default preferences.afm_time = 15
 ## This generally should not be changed, and if it is, should always be a
 ## literal string, not an expression.
 
-define config.save_directory = "MiyaMightBreak-1765017337"
+define config.save_directory = "MutualHarrow-1737099340"
 
 
 ## Icon ########################################################################
@@ -151,6 +154,20 @@ define config.save_directory = "MiyaMightBreak-1765017337"
 ## The icon displayed on the taskbar or dock.
 
 define config.window_icon = "gui/window_icon.png"
+
+## CUSTOM ######################################################################
+
+#
+# Enable more space to predict large animations
+#
+
+# define config.image_cache_size = 200
+define config.cache_surfaces = False
+# define config.image_cache_size = 200
+define config.image_cache_size_mb = 2000
+
+define config.debug_image_cache = True 
+
 
 
 ## Build configuration #########################################################
@@ -183,6 +200,17 @@ init python:
     build.classify('**/.**', None)
     build.classify('**/#**', None)
     build.classify('**/thumbs.db', None)
+    build.classify('**.rpy', None)
+    build.classify("game/**.webp", "archive")
+    build.classify("game/**.webm", "archive")
+    build.classify("game/**.png", "archive")
+    build.classify("game/**.jpg", "archive")
+    build.classify("game/**.ttf", "archive")
+    build.classify("game/**.mp3", "archive")
+    build.classify("game/**.wav", "archive")
+    build.classify("game/**.ogg", "archive")
+    build.classify("game/**.rpyc", "archive")
+
 
     ## To archive files, classify them as 'archive'.
 

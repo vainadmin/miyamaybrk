@@ -1,30 +1,131 @@
-2025-12-06 10:35:41 UTC
+2025-12-06 11:45:01 UTC
 macOS-15.6.1-arm64-arm-64bit
 Ren'Py 8.2.3.24061702
 
-Early init took 0.02s
-Loading error handling took 0.01s
-Loading script took 0.03s
-Loading save slot metadata took 0.01s
+Early init took 0.05s
+Loading error handling took 0.02s
+Loading script took 0.84s
+Loading save slot metadata took 0.07s
 Loading persistent took 0.00s
 Failed to initialize steam: Exception('Init returned false.')
-Running init code took 0.03s
+Running init code took 0.09s
 Loading analysis data took 0.00s
-Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.01s
+Analyze and compile ATL took 0.14s
+Reloading save slot metadata took 0.04s
 Index archives took 0.00s
 Dump and make backups took 0.02s
 Cleaning cache took 0.00s
 Making clean stores took 0.00s
-Initial gc took 0.01s
+Initial gc took 0.04s
 DPI scale factor: 1.000000
 Creating interface object took 0.00s
 Cleaning stores took 0.00s
-Init translation took 0.01s
+Init translation took 0.04s
 Build styles took 0.00s
-Load screen analysis took 0.01s
+Load screen analysis took 0.00s
+Analyze screens took 0.01s
+Save screen analysis took 0.01s
+Prepare screens took 0.05s
+Save pyanalysis. took 0.03s
+Save bytecode. took 0.03s
+Running _start took 0.00s
+Interface start took 0.98s
+
+Initializing gl2 renderer:
+primary display bounds: (0, 0, 1800, 1169)
+swap interval: 2 frames
+Windowed mode.
+Vendor: "b'Apple'"
+Renderer: b'Apple M4 Max'
+Version: b'2.1 Metal - 89.4'
+Display Info: None
+Screen sizes: virtual=(1920, 1080) physical=(636, 358) drawable=(1272, 716)
+Could not open 'cache/shaders.txt':
+Maximum texture size: 4096x4096
+beepy_voice_triggered
+beepy_voice: event >>>>begin><<<<
+Who: Mina Saying: I don't even remember exactly why I was there; the whole night was a blur., Style: minanarrationstandard
+Music File: maydaytalk.mp3
+begin begin
+beepy_voice_triggered
+beepy_voice: event >>>>show><<<<
+Who: Mina Saying: I don't even remember exactly why I was there; the whole night was a blur., Style: minanarrationstandard
+beepy_voice_triggered
+beepy_voice: event >>>>show_done><<<<
+Who: ミナ Saying: でも、君の父さんに真実を問いただしたかったんだと思う。, Style: minanarrationstandard
+show done show done
+beepy_voice_triggered
+beepy_voice: event >>>>slow_done><<<<
+Who: ミナ Saying: でも、君の父さんに真実を問いただしたかったんだと思う。, Style: minanarrationstandard
+slow done slow done
+beepy_voice_triggered
+beepy_voice: event >>>>end><<<<
+Who: ミナ Saying: でも、君の父さんに真実を問いただしたかったんだと思う。, Style: minanarrationstandard
+end end end
+beepy_voice_triggered
+beepy_voice: event >>>>begin><<<<
+Who: ミナ Saying: でも、君の父さんに真実を問いただしたかったんだと思う。, Style: minanarrationstandard
+Music File: maydaytalk.mp3
+begin begin
+beepy_voice_triggered
+beepy_voice: event >>>>show><<<<
+Who: ミナ Saying: でも、君の父さんに真実を問いただしたかったんだと思う。, Style: minanarrationstandard
+beepy_voice_triggered
+beepy_voice: event >>>>show_done><<<<
+Who: ミナ Saying: でも、君の父さんに真実を問いただしたかったんだと思う。, Style: minanarrationstandard
+show done show done
+beepy_voice_triggered
+beepy_voice: event >>>>slow_done><<<<
+Who: ミナ Saying: でも、君の父さんに真実を問いただしたかったんだと思う。, Style: minanarrationstandard
+slow done slow done
+beepy_voice_triggered
+beepy_voice: event >>>>slow_done><<<<
+Who: ミナ Saying: でも、君の父さんに真実を問いただしたかったんだと思う。, Style: minanarrationstandard
+slow done slow done
+beepy_voice_triggered
+beepy_voice: event >>>>end><<<<
+Who: ミナ Saying: でも、君の父さんに真実を問いただしたかったんだと思う。, Style: minanarrationstandard
+end end end
+beepy_voice_triggered
+beepy_voice: event >>>>begin><<<<
+Who: None Saying: , Style: minanarrationstandard
+Music File: maydaytalk.mp3
+begin begin
+beepy_voice_triggered
+beepy_voice: event >>>>show><<<<
+Who: None Saying: , Style: minanarrationstandard
+beepy_voice_triggered
+beepy_voice: event >>>>show_done><<<<
+Who: ミナ Saying: 本当に全ての元凶だったの？どうして母を殺そうとしたの？, Style: minanarrationstandard
+show done show done
+beepy_voice_triggered
+beepy_voice: event >>>>slow_done><<<<
+Who: ミナ Saying: 本当に全ての元凶だったの？どうして母を殺そうとしたの？, Style: minanarrationstandard
+slow done slow done
+beepy_voice_triggered
+beepy_voice: event >>>>end><<<<
+Who: ミナ Saying: 本当に全ての元凶だったの？どうして母を殺そうとしたの？, Style: minanarrationstandard
+end end end
+beepy_voice_triggered
+beepy_voice: event >>>>begin><<<<
+Who: ミナ Saying: 本当に全ての元凶だったの？どうして母を殺そうとしたの？, Style: minanarrationstandard
+Music File: maydaytalk.mp3
+begin begin
+beepy_voice_triggered
+beepy_voice: event >>>>show><<<<
+Who: ミナ Saying: 本当に全ての元凶だったの？どうして母を殺そうとしたの？, Style: minanarrationstandard
+beepy_voice_triggered
+beepy_voice: event >>>>show_done><<<<
+Who: ミナ Saying: そして君を見つけた。, Style: minanarrationstandard
+show done show done
+beepy_voice_triggered
+beepy_voice: event >>>>slow_done><<<<
+Who: ミナ Saying: そして君を見つけた。, Style: minanarrationstandard
+slow done slow done
+Cleaning stores took 0.00s
+Init translation took 0.00s
+Build styles took 0.00s
+Load screen analysis took 0.03s
 Analyze screens took 0.00s
-Save screen analysis took 0.00s
-Prepare screens took 0.02s
-Save pyanalysis. took 0.00s
-Save bytecode. took 0.00s
+Prepare screens took 0.00s
+Running _start took 0.00s

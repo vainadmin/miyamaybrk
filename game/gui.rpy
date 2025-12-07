@@ -11,6 +11,7 @@ init offset = -2
 init python:
     gui.init(1920, 1080)
 
+
 ## Enable checks for invalid or unstable properties in screens or transforms
 define config.check_conflicting_properties = True
 
@@ -24,8 +25,11 @@ define config.check_conflicting_properties = True
 ##
 ## The colors of text in the interface.
 
+###
+### !!! I set this with the paletton Adjacent 3-colors option :)
+
 ## An accent color used throughout the interface to label and highlight text.
-define gui.accent_color = '#0099cc'
+define gui.accent_color = '#AA3939'
 
 ## The color used for a text button when it is neither selected nor hovered.
 define gui.idle_color = '#888888'
@@ -35,7 +39,7 @@ define gui.idle_color = '#888888'
 define gui.idle_small_color = '#aaaaaa'
 
 ## The color that is used for buttons and bars that are hovered.
-define gui.hover_color = '#66c1e0'
+define gui.hover_color = '#D46A6A'
 
 ## The color used for a text button when it is selected but not focused. A
 ## button is selected if it is the current screen or preference value.
@@ -46,50 +50,74 @@ define gui.insensitive_color = '#8888887f'
 
 ## Colors used for the portions of bars that are not filled in. These are not
 ## used directly, but are used when re-generating bar image files.
-define gui.muted_color = '#003d51'
-define gui.hover_muted_color = '#005b7a'
+define gui.muted_color = '#550000'
+define gui.hover_muted_color = '#801515'
 
 ## The colors used for dialogue and menu choice text.
 define gui.text_color = '#ffffff'
 define gui.interface_text_color = '#ffffff'
 
+#image maushover:
+#    "images/images/gui/maus.png"
+#    linear 
+#    repeat
+
+
+# Custom cursor, doesn't seem to work for mac...
+
+#define config.mouse_displayable = MouseDisplayable(
+#    "gui/maus.png", 0, 0).add(
+#        "hover", "gui/maushover.png", 0, 0)
+
+# Custom Click to Continue
+
+#image ctc:
+#    Text("   . . .")
+#    alpha 1.0
+#    pause 1
+#    alpha 0.0
+#    pause 1
+#    alpha 1.0
+#    repeat
+
+
 
 ## Fonts and Font Sizes ########################################################
 
 ## The font used for in-game text.
-define gui.text_font = "DejaVuSans.ttf"
+define gui.text_font = "gui/fonts/font.otf"
 
 ## The font used for character names.
-define gui.name_text_font = "DejaVuSans.ttf"
+define gui.name_text_font = "gui/fonts/font.otf"
 
 ## The font used for out-of-game text.
-define gui.interface_text_font = "DejaVuSans.ttf"
+define gui.interface_text_font = "gui/fonts/font.otf"
 
 ## The size of normal dialogue text.
-define gui.text_size = 33
+define gui.text_size = 32
 
 ## The size of character names.
-define gui.name_text_size = 45
+define gui.name_text_size = 48
 
 ## The size of text in the game's user interface.
-define gui.interface_text_size = 33
+define gui.interface_text_size = 32
 
 ## The size of labels in the game's user interface.
-define gui.label_text_size = 36
+define gui.label_text_size = 32
 
 ## The size of text on the notify screen.
-define gui.notify_text_size = 24
+define gui.notify_text_size = 16
 
 ## The size of the game's title.
-define gui.title_text_size = 75
+define gui.title_text_size = 48
 
 
 ## Main and Game Menus #########################################################
 
 ## The images used for the main and game menus.
-define gui.main_menu_background = "gui/main_menu.png"
-define gui.game_menu_background = "gui/game_menu.png"
 
+define gui.main_menu_background = "gui/background.png"
+define gui.game_menu_background = "gui/ingamebackground.png"
 
 ## Dialogue ####################################################################
 ##
@@ -204,10 +232,11 @@ define gui.quick_button_text_selected_color = gui.accent_color
 ##
 ## Choice buttons are used in the in-game menus.
 
-define gui.choice_button_width = 1185
+define gui.choice_button_width = 500
 define gui.choice_button_height = None
 define gui.choice_button_tile = False
-define gui.choice_button_borders = Borders(150, 8, 150, 8)
+# define gui.choice_button_borders = Borders(150, 8, 150, 8)
+define gui.choice_button_borders = Borders(8, 8, 8, 8)
 define gui.choice_button_text_font = gui.text_font
 define gui.choice_button_text_size = gui.text_size
 define gui.choice_button_text_xalign = 0.5
@@ -287,7 +316,7 @@ define gui.main_menu_text_xalign = 1.0
 define gui.frame_borders = Borders(6, 6, 6, 6)
 
 ## The frame that is used as part of the confirm screen.
-define gui.confirm_frame_borders = Borders(60, 60, 60, 60)
+define gui.confirm_frame_borders = Borders(60, 180, 60, 60)
 
 ## The frame that is used as part of the skip screen.
 define gui.skip_frame_borders = Borders(24, 8, 75, 8)

@@ -1,0 +1,10 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/scenes/scene1.rpy", line 14471: show statement expects a non-empty block.
+    show violencefx onlayer imagedrop5:
+                                       ^
+
+Ren'Py Version: Ren'Py 8.2.3.24061702
+Thu Oct 16 01:28:09 2025

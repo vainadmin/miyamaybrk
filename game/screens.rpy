@@ -4,6 +4,11 @@
 
 init offset = -1
 
+################################################################################
+## Screen Variables
+################################################################################
+
+define loadscreen = "none"
 
 ################################################################################
 ## Styles
@@ -76,10 +81,106 @@ style frame:
     background Frame("gui/frame.png", gui.frame_borders, tile=gui.frame_tile)
 
 
+################################################################################
+## Functions, Custom Functions
+################################################################################
+
+# Define the functions for actions
+# Did you know that every Ren'Py statement has a PYTHON EQUIVALENT? 
+#init python:
+#    def button_clicked():
+        # Did you know that every Ren'Py statement has a PYTHON EQUIVALENT? 
+#        renpy.say(e, "Button clicked!")
+
+#    def alternate_action():
+#        renpy.say(e, "Alternate action triggered!")
+
+#    def button_hovered():
+#        renpy.say(e, "Button hovered over.")
+
+#    def button_unhovered():
+#        renpy.say(e, "Button unhovered.")
+
 
 ################################################################################
 ## In-game screens
 ################################################################################
+
+## Splash Screens ##################################################################
+##
+##
+##
+
+# Prevents skipping
+screen noclick(): 
+    zorder 1000
+    $ preferences.afm_enable = True
+
+
+##
+## Intro Splash
+
+image splashmovie = Movie(
+    play="images/splashscreen/newSplashScreen.webm", side_mask=False)
+
+
+label splashscreen:
+    
+    # Comment this out when you're developing so you can skip
+    show screen noclick 
+    # NOTE: YOU MUST REIMPLEMENT THIS FOR PUBLIC BUILDS !!!
+    # NOTE: !!!
+
+    # predict future images so it doesn't lag
+    # $ renpy.start_predict("images/splashscreen/*")
+    # $ renpy.start_predict("images/mainmenubg/*")
+
+    play sound "splashscree.ogg"
+    scene blackbackground
+    with Pause(1)
+
+    show splashmovie
+
+    with Pause(9.5)
+
+    # stop, because we are done with the splash 
+    # $ renpy.stop_predict("images/splashscreen/*")
+
+    hide screen noclick
+    hide splashmovie 
+
+    # you'll jump to splash2 for language selection eventually 
+
+    # Re-implement after localisation
+
+    # NOTE: Reimplement this when implemeting languages
+    call screen languageselect
+
+    # return
+
+image langselectbg:
+    "gui/langselect.png"
+
+screen languageselect():
+    add "langselectbg" at basicfade
+    # renpy.change_language("turkish") On developer console  for testing
+
+    vbox:
+        xalign 0.5 yalign 0.5
+        textbutton "English" text_size 32 text_font "gui/fonts/font.otf" action Language(None),Return()
+        textbutton "Русский" text_size 32 text_font "gui/fonts/font.otf" action Language("russian"),Return()
+        textbutton "Polski" text_size 32 text_font "gui/fonts/font.otf" action Language("polish"),Return()
+        textbutton "简体中文" text_size 32 text_font "gui/fonts/font.otf" action Language("schinese"),Return()
+        textbutton "繁體中文" text_size 32 text_font "gui/fonts/font.otf" action Language("tchinese"),Return()
+        textbutton "日本語" text_size 32 text_font "gui/fonts/jpfont.otf" action Language("japanese"),Return()
+        textbutton "한국어" text_size 32 text_font "gui/fonts/font.otf" action Language("korean"),Return()
+        textbutton "Deutsch" text_size 32 text_font "gui/fonts/font.otf" action Language("german"),Return()
+        textbutton "Français" text_size 32 text_font "gui/fonts/font.otf" action Language("french"),Return()
+        textbutton "Italiano" text_size 32 text_font "gui/fonts/font.otf" action Language("italian"),Return()
+        textbutton "Español" text_size 32 text_font "gui/fonts/font.otf" action Language("spanish"),Return()
+        textbutton "Português" text_size 32 text_font "gui/fonts/font.otf" action Language("portuguese"),Return()
+        textbutton "Türkçe" text_size 32 text_font "gui/fonts/font.otf" action Language("turkish"),Return()
+        # renpy.change_language("turkish")  On developer console for testing
 
 
 ## Say screen ##################################################################
@@ -93,28 +194,40 @@ style frame:
 ## this to manage text display. It can also create displayables with id "who"
 ## and id "window" to apply style properties.
 ##
-## https://www.renpy.org/doc/html/screen_special.html#say
+## https://www.renpy.org/doc/Ohtml/screen_special.html#say
 
 screen say(who, what):
-    style_prefix "say"
+    on "show" action SetVariable("say_what", what)
+    on "show" action SetVariable("say_who", who)
+
+    # style_prefix "say"
+    #python:
+        #print(who)
+        #print(what)
+        #print(facestage)
+        #if facestage is "rexface":
+            #renpy.show("tranonereverse", layer='effects', what=None)
+
+    
+    # if who == "Boss":
+    #    $ speaker = "Boss"
+    #    $ print(f"{speaker} is here!")
 
     window:
+        #if ("(" and ")" in what):
+        #    style "thoughts"
+        #    style "thoughts_yes"
+        
         id "window"
 
         if who is not None:
-
             window:
                 id "namebox"
                 style "namebox"
                 text who id "who"
-
-        text what id "what"
-
-
-    ## If there's a side image, display it above the text. Do not display on the
-    ## phone variant - there's no room.
-    if not renpy.variant("small"):
-        add SideImage() xalign 0.0 yalign 1.0
+                
+        text what:
+            id "what"
 
 
 ## Make the namebox available for styling through the Character object.
@@ -124,27 +237,33 @@ init python:
 style window is default
 style say_label is default
 style say_dialogue is default
-style say_thought is say_dialogue
 
 style namebox is default
 style namebox_label is say_label
-
 
 style window:
     xalign 0.5
     xfill True
     yalign gui.textbox_yalign
     ysize gui.textbox_height
+    # background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
 
-    background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
+style widefour_dialogue: 
+    properties gui.text_properties("dialogue")
+
+    xpos gui.dialogue_xpos + 213
+    xsize gui.dialogue_width - 150
+    line_spacing 5
+    ypos gui.dialogue_ypos - 85
+
+    adjust_spacing False
 
 style namebox:
-    xpos gui.name_xpos
+    xpos gui.name_xpos + 177
     xanchor gui.name_xalign
     xsize gui.namebox_width
-    ypos gui.name_ypos
+    ypos gui.name_ypos - 80
     ysize gui.namebox_height
-
     background Frame("gui/namebox.png", gui.namebox_borders, tile=gui.namebox_tile, xalign=gui.name_xalign)
     padding gui.namebox_borders.padding
 
@@ -153,14 +272,122 @@ style say_label:
     xalign gui.name_xalign
     yalign 0.5
 
+style frame1_ultrawide:
+    properties gui.text_properties("dialogue")
+
+    # xpos gui.dialogue_xpos + 84
+    xalign 0.5
+
+    xsize gui.dialogue_width - 60
+    ypos gui.dialogue_ypos - 180 
+    line_spacing 5
+    text_align 0.5
+
+
+style the_monster:
+    properties gui.text_properties("dialogue")
+
+    # xpos gui.dialogue_xpos + 84
+    xalign 0.5
+
+    xsize gui.dialogue_width - 100
+    ypos gui.dialogue_ypos - 80
+    line_spacing 5
+    text_align 0.5
+
 style say_dialogue:
     properties gui.text_properties("dialogue")
 
-    xpos gui.dialogue_xpos
-    xsize gui.dialogue_width
-    ypos gui.dialogue_ypos
+    xpos gui.dialogue_xpos + 145
+    xsize gui.dialogue_width + 15
+    line_spacing 5
+    ypos gui.dialogue_ypos - 80
 
     adjust_spacing False
+
+# This only applies when you have NOTHING in front 
+style say_thought:
+    properties gui.text_properties("dialogue")
+
+    # xpos gui.dialogue_xpos + 84
+    xalign 0.5
+
+    xsize gui.dialogue_width - 100
+    ypos gui.dialogue_ypos - 80
+    line_spacing 5
+    text_align 0.5
+
+style say_thought_character:
+    properties gui.text_properties("dialogue")
+
+    # xpos gui.dialogue_xpos + 84
+    xalign 0.5
+
+    xsize gui.dialogue_width - 100
+    ypos gui.dialogue_ypos - 35
+    line_spacing 5
+    text_align 0.5
+
+style say_thought_charultra:
+    properties gui.text_properties("dialogue")
+
+    # xpos gui.dialogue_xpos + 84
+    xalign 0.5
+
+    xsize gui.dialogue_width - 60
+    ypos gui.dialogue_ypos - 140 
+    line_spacing 5
+    text_align 0.5
+
+
+style say_thought_character_namebox:
+    color '#AA3939'
+
+    xalign 0.50
+
+    ysize gui.namebox_height
+    xsize gui.namebox_width
+
+    background Frame("gui/namebox.png", gui.namebox_borders, tile=gui.namebox_tile, xalign=gui.name_xalign)
+    padding gui.namebox_borders.padding
+
+    line_spacing 5
+    text_align 0.5
+
+    size  46
+    ypos -28
+
+style say_thought_charultra_namebox:
+    color '#AA3939'
+
+    xalign 0.50
+
+    ysize gui.namebox_height
+    xsize gui.namebox_width
+
+    background Frame("gui/namebox.png", gui.namebox_borders, tile=gui.namebox_tile, xalign=gui.name_xalign)
+    padding gui.namebox_borders.padding
+
+    line_spacing 5
+    text_align 0.5
+
+    size  46
+    ypos -135
+
+    
+
+
+# This only applies when you have 'n' at the front for narraton
+style narration:
+    properties gui.text_properties("dialogue")
+
+    xpos gui.dialogue_xpos 
+    xsize gui.dialogue_width
+    ypos gui.dialogue_ypos 
+    
+
+    adjust_spacing False
+
 
 ## Input screen ################################################################
 ##
@@ -208,10 +435,19 @@ style input:
 screen choice(items):
     style_prefix "choice"
 
+    if choice_position == "right":
+        style_prefix "choiceRight"
+    elif choice_position == "left":
+        style_prefix "choiceLeft"
+
+    # you can use i.caption to change the background based on contents
+
     vbox:
         for i in items:
-            textbutton i.caption action i.action
-
+            textbutton i.caption:
+                action i.action at anim_choice_button
+                # idle_background "gui/button/choice_" + i.kwargs["color"] + "_idle.png"
+                # hover_background "gui/button/choice_" + i.kwargs["color"] + "_hover.png"
 
 style choice_vbox is vbox
 style choice_button is button
@@ -226,9 +462,42 @@ style choice_vbox:
 
 style choice_button is default:
     properties gui.button_properties("choice_button")
+    xsize 1000
 
 style choice_button_text is default:
     properties gui.text_properties("choice_button")
+
+
+style choiceLeft_vbox:
+    xalign 0.9
+    ypos 505
+    yanchor 0.5
+    spacing gui.choice_spacing
+
+style choiceLeft_button is default:
+    properties gui.button_properties("choice_button")
+
+style choiceLeft_button_text is default:
+    properties gui.button_text_properties("choice_button")
+
+style choiceRight_vbox:
+    xalign 0.75
+    ypos 505
+    yanchor 0.4
+    spacing gui.choice_spacing
+
+style choiceRight_button is default:
+    properties gui.button_properties("choice_button")
+    xsize 800
+
+style choiceRight_button_text is default:
+    properties gui.button_text_properties("choice_button")
+
+transform anim_choice_button: 
+    on hover: 
+        linear 0.25 zoom 1.25 
+    on idle: 
+        linear 0.25 zoom 1.0
 
 
 ## Quick Menu screen ###########################################################
@@ -261,10 +530,12 @@ screen quick_menu():
 
 ## This code ensures that the quick_menu screen is displayed in-game, whenever
 ## the player has not explicitly hidden the interface.
-init python:
-    config.overlay_screens.append("quick_menu")
 
-default quick_menu = True
+### I've hidden the quick menu
+# init python:
+    # config.overlay_screens.append("quick_menu")
+
+default quick_menu = False
 
 style quick_button is default
 style quick_button_text is button_text
@@ -291,44 +562,43 @@ screen navigation():
         style_prefix "navigation"
 
         xpos gui.navigation_xpos
-        yalign 0.5
+        yalign 0.25
 
-        spacing gui.navigation_spacing
+        spacing gui.navigation_spacing + 10
 
-        if main_menu:
-
-            textbutton _("Start") action Start()
-
-        else:
-
+        # if main_menu:
+            #if loadscreen == "load":  
+                #textbutton _("Load") action ShowMenu("load")
+            #if loadscreen == "options":  
+                #textbutton _("Options") action ShowMenu("preferences")
+            #if loadscreen == "controls":  
+                #textbutton _("Controls") action ShowMenu("help")
+            #if loadscreen == "credits":  
+                #textbutton _("Credits") action ShowMenu("about")
+            # textbutton _("Start") action Start()
+        if not main_menu:
             textbutton _("History") action ShowMenu("history")
-
             textbutton _("Save") action ShowMenu("save")
-
-        textbutton _("Load") action ShowMenu("load")
-
-        textbutton _("Preferences") action ShowMenu("preferences")
+            textbutton _("Options") action ShowMenu("preferences")    
+            textbutton _("Main Menu") action MainMenu()
 
         if _in_replay:
 
             textbutton _("End Replay") action EndReplay(confirm=True)
 
-        elif not main_menu:
 
-            textbutton _("Main Menu") action MainMenu()
+        # textbutton _("About") action ShowMenu("about")
 
-        textbutton _("About") action ShowMenu("about")
-
-        if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
+        # if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
             ## Help isn't necessary or relevant to mobile devices.
-            textbutton _("Help") action ShowMenu("help")
+            # textbutton _("Help") action ShowMenu("help")
 
-        if renpy.variant("pc"):
+        # if renpy.variant("pc"):
 
             ## The quit button is banned on iOS and unnecessary on Android and
             ## Web.
-            textbutton _("Quit") action Quit(confirm=not main_menu)
+            # textbutton _("Quit") action Quit(confirm=not main_menu)
 
 
 style navigation_button is gui_button
@@ -348,31 +618,88 @@ style navigation_button_text:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
 
+##
+## Main Menu
+
+#image mainmenback:
+#    "images/mainmenuimagemap/layer1.png"
+
+# image mainmenmidback:
+#    "gui/mainmenu/mm_midbackdrop.png"
+
+image mainmenidle:
+    "gui/mainmenu/mainmenuref.png" 
+
+image menuidle:
+    "gui/mainmenu/idle.png" 
+
+image menuhover:
+    "gui/mainmenu/hover.png" 
+
 screen main_menu():
 
     ## This ensures that any other menu screen is replaced.
     tag menu
 
-    add gui.main_menu_background
+    # NOTE: We add this back later 
+    add "homescreen" at basicfade
+    # add "blackplaceholder" at basicfade
+
+    # add gui.main_menu_background
+
+    # add "mainmenback" at basicfade
+    # add "mainmenubg" at basicfade
+    # add "mainmenmidback" at basicfade
+    # add "mainmeneyes" at basicfade
+
+    # NOTE: It seems as though any continuous fade is extremely high CPU usage
+    # NOTE: What this means is that it's better to "manually" fade, if we're going to
+    # NOTE: be using a looping fade. Fades that are one-off seem to be ok. 
+
+    # add "mainmeneyes" at double_fade
+
+    # They work like layers, so whichever comes next goes on top
+    # add "mainmen1"
+    # add "mainmen2"
+
+        # Use your imagemap
+    imagemap:
+        ground "menuidle" at basicfade 
+        hover "menuhover" 
+
+        # Define hotspots for each button
+        # Example coordinates and sizes (x, y, width, height)
+        hotspot (437, 604, 285, 59): 
+            action Start() 
+            alt "Start Game"
+        hotspot (905, 604, 140, 59): 
+            action [ShowMenu("load"), SetVariable("loadscreen", "load")] 
+            alt "Load Game"
+        hotspot (1056, 604, 204, 59):
+            action [ShowMenu("preferences"), SetVariable("loadscreen", "options")] 
+            alt "Options"
+        hotspot (1270, 604, 203, 59):
+            action [ShowMenu("help"), SetVariable("loadscreen", "controls")]  
+            alt "Controls"
+        hotspot (1742, 992, 149, 58):
+            action [ShowMenu("about"), SetVariable("loadscreen", "credits")] 
+            alt "Credits"
+        hotspot (1563, 992, 151, 58):
+            action Quit(confirm=False) #confirm=False means no are you sure be asked
+            alt "Quit"
+        # hotspot (x, y, w, h) action Quit(confirm=True) alt "Quit"
+
 
     ## This empty frame darkens the main menu.
-    frame:
-        style "main_menu_frame"
+    #frame:
+    #    style "main_menu_frame"
 
     ## The use statement includes another screen inside this one. The actual
     ## contents of the main menu are in the navigation screen.
-    use navigation
 
-    if gui.show_name:
-
-        vbox:
-            style "main_menu_vbox"
-
-            text "[config.name!t]":
-                style "main_menu_title"
-
-            text "[config.version]":
-                style "main_menu_version"
+    ## you would disable this, making it one-way 
+    ## game menu != main menu
+    # use navigation
 
 
 style main_menu_frame is empty
@@ -382,10 +709,10 @@ style main_menu_title is main_menu_text
 style main_menu_version is main_menu_text
 
 style main_menu_frame:
-    xsize 420
+    xsize 1720
     yfill True
 
-    background "gui/overlay/main_menu.png"
+    # background "gui/overlay/main_menu.png"
 
 style main_menu_vbox:
     xalign 1.0
@@ -417,10 +744,16 @@ screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
 
     style_prefix "game_menu"
 
-    if main_menu:
-        add gui.main_menu_background
-    else:
-        add gui.game_menu_background
+    # if not main_menu:
+        # add "gui/sidebar.png"
+
+    # There is ALREADY a fade, do NOT use a fade twice
+
+    #if main_menu:
+    #    add gui.main_menu_background at opacity(0.1)
+    #else:
+    #    add gui.game_menu_background at opacity(0.1)
+
 
     frame:
         style "game_menu_outer_frame"
@@ -475,13 +808,20 @@ screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
 
     textbutton _("Return"):
         style "return_button"
+        # All text buttons needs these properties for it to work
+        text_color '#888888'
+        text_hover_color "#D46A6A"
 
-        action Return()
-
-    label title
-
+        action [Return(), SetVariable("loadscreen", "none")]
+    
+    # key game_menu is escape or right click this is for exiting with esc key
     if main_menu:
-        key "game_menu" action ShowMenu("main_menu")
+        key "game_menu" action [ShowMenu("main_menu"), SetVariable("loadscreen", "none")]
+
+    # This shows whether the title in the top left corner is shown 
+    # label title
+
+    
 
 
 style game_menu_outer_frame is empty
@@ -498,10 +838,10 @@ style return_button is navigation_button
 style return_button_text is navigation_button_text
 
 style game_menu_outer_frame:
-    bottom_padding 45
+    bottom_padding 180
     top_padding 180
 
-    background "gui/overlay/game_menu.png"
+    # background "gui/overlay/game_menu.png"
 
 style game_menu_navigation_frame:
     xsize 420
@@ -532,6 +872,7 @@ style game_menu_label_text:
 
 style return_button:
     xpos gui.navigation_xpos
+
     yalign 1.0
     yoffset -45
 
@@ -547,6 +888,9 @@ screen about():
 
     tag menu
 
+    # There is ALREADY a fade, do NOT use a fade twice
+    add "gui/credits.png" 
+
     ## This use statement includes the game_menu screen inside this one. The
     ## vbox child is then included inside the viewport inside the game_menu
     ## screen.
@@ -554,16 +898,16 @@ screen about():
 
         style_prefix "about"
 
-        vbox:
+        # vbox:
 
-            label "[config.name!t]"
-            text _("Version [config.version!t]\n")
+            #label "[config.name!t]"
+            #text _("Version [config.version!t]\n")
 
             ## gui.about is usually set in options.rpy.
-            if gui.about:
-                text "[gui.about!t]\n"
+            #if gui.about:
+            #    text "[gui.about!t]\n"
 
-            text _("Made with {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
+            # text _("VAINSANE PTY LTD {a=https://www.renpy.org/}Ren'Py{/a} [renpy.version_only].\n\n[renpy.license!t]")
 
 
 style about_label is gui_label
@@ -587,12 +931,16 @@ screen save():
 
     tag menu
 
+    add "gui/saveload.png" 
+
     use file_slots(_("Save"))
 
 
 screen load():
 
     tag menu
+
+    add "gui/saveload.png" 
 
     use file_slots(_("Load"))
 
@@ -610,23 +958,23 @@ screen file_slots(title):
             order_reverse True
 
             ## The page name, which can be edited by clicking on a button.
-            button:
-                style "page_label"
+            #button:
+                #style "page_label"
 
-                key_events True
-                xalign 0.5
-                action page_name_value.Toggle()
+                #key_events True
+                #xalign 0.5
+                #action page_name_value.Toggle()
 
-                input:
-                    style "page_label_text"
-                    value page_name_value
+                #input:
+                    #style "page_label_text"
+                    #value page_name_value
 
             ## The grid of file slots.
             grid gui.file_slot_cols gui.file_slot_rows:
                 style_prefix "slot"
 
                 xalign 0.5
-                yalign 0.5
+                yalign 0.0
 
                 spacing gui.slot_spacing
 
@@ -650,11 +998,12 @@ screen file_slots(title):
                         key "save_delete" action FileDelete(slot)
 
             ## Buttons to access other pages.
+
             vbox:
                 style_prefix "page"
 
                 xalign 0.5
-                yalign 1.0
+                yalign 1.05
 
                 hbox:
                     xalign 0.5
@@ -729,6 +1078,9 @@ screen preferences():
 
     tag menu
 
+    # There is ALREADY a fade, do NOT use a fade twice
+    add "gui/options.png" 
+
     use game_menu(_("Preferences"), scroll="viewport"):
 
         vbox:
@@ -740,16 +1092,18 @@ screen preferences():
 
                     vbox:
                         style_prefix "radio"
-                        label _("Display")
+                        label _("  Display")
                         textbutton _("Window") action Preference("display", "window")
                         textbutton _("Fullscreen") action Preference("display", "fullscreen")
 
                 vbox:
                     style_prefix "check"
-                    label _("Skip")
+                    label _("  Skip")
                     textbutton _("Unseen Text") action Preference("skip", "toggle")
                     textbutton _("After Choices") action Preference("after choices", "toggle")
                     textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
+                
+
 
                 ## Additional vboxes of type "radio_pref" or "check_pref" can be
                 ## added here, to add additional creator-defined preferences.
@@ -766,9 +1120,18 @@ screen preferences():
 
                     bar value Preference("text speed")
 
+                    null height (1.8 * gui.pref_spacing)
+
+                    label _("Toggle Auto-Forward Mode")
+
+                    null height (1 * gui.pref_spacing)
+
+                    textbutton _("Auto-Forward") action Preference("auto-forward", "toggle")
+
                     label _("Auto-Forward Time")
 
                     bar value Preference("auto-forward time")
+
 
                 vbox:
 
@@ -889,10 +1252,15 @@ screen history():
 
     tag menu
 
+    add "gui/main_menu.png" 
+
     ## Avoid predicting this screen, as it can be very large.
     predict False
 
-    use game_menu(_("History"), scroll=("vpgrid" if gui.history_height else "viewport"), yinitial=1.0, spacing=gui.history_spacing):
+    # Change the history spacing to make the text tighter together
+    use game_menu(_("History"), scroll=("vpgrid" if gui.history_height else "viewport"), 
+                                yinitial=1.0,  
+                                spacing=gui.history_spacing - 140):
 
         style_prefix "history"
 
@@ -977,6 +1345,8 @@ screen help():
 
     tag menu
 
+    add "gui/help.png"
+
     default device = "keyboard"
 
     use game_menu(_("Help"), scroll="viewport"):
@@ -986,20 +1356,20 @@ screen help():
         vbox:
             spacing 23
 
-            hbox:
+    #        hbox:
 
-                textbutton _("Keyboard") action SetScreenVariable("device", "keyboard")
-                textbutton _("Mouse") action SetScreenVariable("device", "mouse")
+    #            textbutton _("Keyboard") action SetScreenVariable("device", "keyboard")
+    #            textbutton _("Mouse") action SetScreenVariable("device", "mouse")
 
-                if GamepadExists():
-                    textbutton _("Gamepad") action SetScreenVariable("device", "gamepad")
+    #            if GamepadExists():
+    #                textbutton _("Gamepad") action SetScreenVariable("device", "gamepad")
 
-            if device == "keyboard":
-                use keyboard_help
-            elif device == "mouse":
-                use mouse_help
-            elif device == "gamepad":
-                use gamepad_help
+    #        if device == "keyboard":
+    #            use keyboard_help
+    #        elif device == "mouse":
+    #            use mouse_help
+    #        elif device == "gamepad":
+    #            use gamepad_help
 
 
 screen keyboard_help():
@@ -1036,21 +1406,21 @@ screen keyboard_help():
         label _("Page Down")
         text _("Rolls forward to later dialogue.")
 
-    hbox:
-        label "H"
-        text _("Hides the user interface.")
+    #hbox:
+    #    label "H"
+    #    text _("Hides the user interface.")
 
     hbox:
         label "S"
         text _("Takes a screenshot.")
 
-    hbox:
-        label "V"
-        text _("Toggles assistive {a=https://www.renpy.org/l/voicing}self-voicing{/a}.")
+    #hbox:
+    #    label "V"
+    #    text _("Toggles assistive self-voicing.")
 
-    hbox:
-        label "Shift+A"
-        text _("Opens the accessibility menu.")
+    #hbox:
+    #    label "Shift+A"
+    #    text _("Opens the accessibility menu.")
 
 
 screen mouse_help():
@@ -1150,6 +1520,7 @@ screen confirm(message, yes_action, no_action):
 
     style_prefix "confirm"
 
+    # There is ALREADY a fade, do NOT use a fade twice
     add "gui/overlay/confirm.png"
 
     frame:
@@ -1608,3 +1979,32 @@ style slider_vbox:
 style slider_slider:
     variant "small"
     xsize 900
+
+
+#init python:
+#    class MouseTracker(renpy.Displayable):
+#        def __init__(self):
+#            super(MouseTracker, self).__init__()
+#            self.last_pos = (0, 0)
+            # Add this displayable to overlays
+#            config.overlay_functions.append(self.overlay)
+
+#        def overlay(self):
+#            ui.add(self)
+
+#        def render(self, width, height, st, at):
+#            return renpy.Render(1, 1)  # Invisible, but active
+
+#        def event(self, ev, x, y, st):
+#            import pygame
+#            if ev.type == pygame.MOUSEMOTION:
+#                self.last_pos = (x, y)
+#                print("Mouse moved to:", self.last_pos)
+#            return
+        
+#init python:
+#    mouse_tracker = MouseTracker()
+
+
+
+
